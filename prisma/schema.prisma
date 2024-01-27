@@ -1,0 +1,108 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongodb"]
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  firstName String
+  lastName  String
+  email     String   @unique
+  phone     String
+  avatar    String
+  birthday  DateTime
+  sex       Sex
+  nikname   String
+  country   String
+  city      String
+  showAge   Boolean
+
+  listerId   String
+  orders     Order[]
+  cart       Cart?
+  role       Role
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Order {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  deliveryAdress  String
+  depositedAmount Int
+  deliveryCost    Int
+  deliveryStatus  String
+  totalCost       Int
+  recipient       String
+  paymentStatus   String
+  amount          Int
+  paymentMethod   String
+  customerId      String @unique @db.ObjectId
+  customer        User   @relation(fields: [customerId], references: [id])
+  goods           Good[]
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Good {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  brand       String
+  country     String
+  material    String[]
+  hight       Int
+  width       Int
+  depth       Int
+  weight      Int
+  color       String
+  season      Season[]
+  sex         Sex[]
+  age         Age[]
+  description String
+  type        String
+
+  orderId String @db.ObjectId
+  order   Order  @relation(fields: [orderId], references: [id])
+  cartId  String @db.ObjectId
+  cart    Cart   @relation(fields: cartId, references: [id])
+}
+
+model Cart {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @unique @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
+  goods  Good[]
+}
+
+enum Sex {
+  MALE
+  FEMALE
+  TRANSGENDER
+}
+
+enum Age {
+  BABY
+  CHILDREN
+  TEENAGER
+  ADULT
+  AGED
+}
+
+enum Season {
+  SUMMER
+  WINTER
+  SPRING
+  AUTUMN
+  DEMISEASON
+}
+
+enum Role {
+  BUYER
+  SALLER
+  ADMIN
+}
