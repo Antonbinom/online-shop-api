@@ -1,6 +1,6 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["mongodb"]
+  provider = "prisma-client-js"
+  // previewFeatures = ["mongodb"]
 }
 
 datasource db {
@@ -9,20 +9,18 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  firstName String
-  lastName  String
-  email     String   @unique
-  phone     String
-  avatar    String
-  birthday  DateTime
-  sex       Sex
-  nikname   String
-  country   String
-  city      String
-  showAge   Boolean
-
-  listerId   String
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  firstName  String
+  lastName   String
+  email      String   @unique
+  phone      String
+  password   String
+  avatar     String
+  birthday   String
+  sex        Sex
+  country    String
+  city       String
+  showAge    Boolean
   orders     Order[]
   cart       Cart?
   role       Role
@@ -75,7 +73,7 @@ model Good {
 model Cart {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   userId String @unique @db.ObjectId
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   goods  Good[]
 }
 
@@ -83,6 +81,7 @@ enum Sex {
   MALE
   FEMALE
   TRANSGENDER
+  UNKNOWN
 }
 
 enum Age {
