@@ -7,15 +7,15 @@ class ApiError extends Error {
   }
 
   static badRequest(message: string) {
-    return new ApiError(404, message);
+    throw new ApiError(404, message);
   }
 
   static forbidden(message: string) {
-    return new ApiError(403, message);
+    throw new ApiError(403, message);
   }
 
   static internal(message: string) {
-    return new ApiError(500, message);
+    throw new ApiError(500, message);
   }
 }
 

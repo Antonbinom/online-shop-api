@@ -2,10 +2,10 @@ import dotenv from "dotenv";
 dotenv.config();
 import bcrypt from "bcrypt"; //для хэширования паролей пользователей хранящихся в БД
 import jwt from "jsonwebtoken"; //для создания jwt токена
-import { NextFunction, Request, Response } from "express";
 import prisma from "../client";
-import { Role, Sex } from "@prisma/client";
 import ApiError from "../helpers/ApiError";
+import { NextFunction, Request, Response } from "express";
+import { Role, Sex } from "@prisma/client";
 
 interface RequestBody {
   firstName: string;
@@ -97,7 +97,7 @@ export const signup = async (
         password: hashedPassword,
         avatar: "",
         birthday: "",
-        sex: Sex.UNKNOWN,
+        sex: Sex.unknown,
         country: "",
         city: "",
         showAge: false,
@@ -184,18 +184,18 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     showAge: true,
   };
 
-  // const user = await prisma.user.findUnique({
-  //   where: {
-  //     email: payload.email,
-  //   },
-  //   select: filter,
-  // });
+  const user = await prisma.user.findUnique({
+    where: {
+      email: payload.email,
+    },
+    select: filter,
+  });
 
-  // if (!user) {
-  //   return next(ApiError.badRequest("User not found"));
-  // }
+  if (!user) {
+    return next(ApiError.badRequest("User not found"));
+  }
 
-  return res.send(payload);
+  return res.send(user);
 };
 
 // {

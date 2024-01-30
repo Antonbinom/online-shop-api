@@ -29,7 +29,7 @@ model User {
 }
 
 model Order {
-  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
   deliveryAdress  String
   depositedAmount Int
   deliveryCost    Int
@@ -39,69 +39,97 @@ model Order {
   paymentStatus   String
   amount          Int
   paymentMethod   String
-  customerId      String @unique @db.ObjectId
-  customer        User   @relation(fields: [customerId], references: [id])
-  goods           Good[]
+  customerId      String    @unique @db.ObjectId
+  customer        User      @relation(fields: [customerId], references: [id])
+  products        Product[]
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
 
-model Good {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String
-  brand       String
-  country     String
-  material    String[]
-  hight       Int
-  width       Int
-  depth       Int
-  weight      Int
-  color       String
-  season      Season[]
-  sex         Sex[]
-  age         Age[]
-  description String
-  type        String
-
-  orderId String @db.ObjectId
-  order   Order  @relation(fields: [orderId], references: [id])
-  cartId  String @db.ObjectId
-  cart    Cart   @relation(fields: cartId, references: [id])
+model Product {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  brand           String
+  country         String
+  material        String[]
+  size            Size?
+  availableSizes  Size[]
+  hight           Int?
+  width           Int?
+  depth           Int?
+  weight          Int?
+  color           Color
+  availableColors Color[]
+  season          Season[]
+  sex             Sex[]
+  age             Age[]
+  description     String
+  type            String
+  price           Int
+  orderId         String?  @db.ObjectId
+  order           Order?   @relation(fields: [orderId], references: [id])
+  cartId          String?  @db.ObjectId
+  cart            Cart?    @relation(fields: cartId, references: [id])
 }
 
 model Cart {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @unique @db.ObjectId
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  goods  Good[]
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String    @unique @db.ObjectId
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products Product[]
 }
 
 enum Sex {
-  MALE
-  FEMALE
-  TRANSGENDER
-  UNKNOWN
+  male
+  female
+  transgender
+  unknown
 }
 
 enum Age {
-  BABY
-  CHILDREN
-  TEENAGER
-  ADULT
-  AGED
+  baby
+  children
+  teenager
+  adult
+  aged
 }
 
 enum Season {
-  SUMMER
-  WINTER
-  SPRING
-  AUTUMN
-  DEMISEASON
+  summer
+  winter
+  spring
+  autumn
+  demiseason
 }
 
 enum Role {
   BUYER
   SALLER
   ADMIN
+}
+
+enum Color {
+  red
+  blue
+  green
+  yellow
+  orange
+  purple
+  pink
+  brown
+  gray
+  black
+  white
+}
+
+enum Size {
+  xxs
+  xs
+  s
+  md
+  lg
+  xl
+  xxl
+  xxxl
 }
