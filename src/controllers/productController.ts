@@ -22,6 +22,7 @@ interface Product {
   description: string;
   type: string;
   price: number;
+  avalableQuantity: number;
 }
 
 interface ProductFilters {
@@ -33,11 +34,6 @@ interface ProductFilters {
   price?: number;
   minPrice?: string;
   maxPrice?: string;
-  // age?: Age | Age[];
-  // sex?: Sex | Sex[];
-  // size?: Size | Size[];
-  // season?: Season | Season[];
-  // material?: string | string[];
 }
 
 export const create = async (
@@ -64,22 +60,8 @@ export const create = async (
     description,
     type,
     price,
+    availableQuantity,
   } = req.body;
-
-  // if (
-  //   !name &&
-  //   !brand &&
-  //   !country &&
-  //   !material &&
-  //   !((size && availableSizes) || (hight && width && depth)) &&
-  //   !weight &&
-  //   !color &&
-  //   !availableColors &&
-  //   !description &&
-  //   !type
-  // ) {
-  //   return ApiError.badRequest("Required");
-  // }
 
   const product = await prisma.product.create({
     data: {
@@ -95,6 +77,7 @@ export const create = async (
       ...(season && { season }),
       ...(sex && { sex }),
       ...(age && { age }),
+      availableQuantity,
       weight,
       color,
       availableColors,
@@ -125,6 +108,7 @@ export const getAll = async (
     size,
     minPrice,
     maxPrice,
+    availableQuantity,
   } = req.query;
 
   const filters = {

@@ -197,26 +197,3 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
   return res.send(user);
 };
-
-// {
-//   "firstName": "Anton",
-//   "lastName": "Semenikhin",
-//   "phone": "89995398262",
-//   "email": "anton@mail.ru",
-//   "password": "12345678",
-//   "avatar": "",
-//   "birthday": "",
-//   "sex": "",
-//   "country": "",
-//   "city": "",
-//   "showAge": "",
-//   "role": ""
-// }
-
-// {
-//   "firstName": "anton",
-//   "lastName": "semenikhin",
-//   "phone": "89995398262",
-//   "email": "anton@mail.ru",
-//   "password": "12345678"
-// }
