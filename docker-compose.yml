@@ -17,3 +17,8 @@ services:
       - "5000:5000"
     depends_on:
       - mongodb
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:   
+  mongodb_data:   
