@@ -14,13 +14,14 @@ interface RequestBody {
   phone: string;
   password: string;
   role?: Role | null;
+  address?: string;
   avatar: string;
   birthday: string;
   sex: string;
   country: string;
   city: string;
   showAge: string;
-  orders: string;
+  orders: string[] | [];
   cart: string;
 }
 
@@ -97,6 +98,7 @@ export const signup = async (
         password: hashedPassword,
         avatar: "",
         birthday: "",
+        address: "",
         sex: Sex.unknown,
         country: "",
         city: "",
@@ -196,4 +198,8 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
   }
 
   return res.send(user);
+};
+
+export const editProfile = () => {
+  // TODO: edit user
 };

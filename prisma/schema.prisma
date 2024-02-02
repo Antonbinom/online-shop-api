@@ -24,27 +24,28 @@ model User {
   orders     Order[]
   cart       Cart?
   role       Role
+  address    String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
 
 model Order {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  deliveryAdress  String
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  deliveryAddress String
   depositedAmount Int
   deliveryCost    Int
-  deliveryStatus  String
+  deliveryStatus  DeliveryStatus
   totalCost       Int
   recipient       String
-  paymentStatus   String
-  amount          Int
-  paymentMethod   String
-  customerId      String   @unique @db.ObjectId
-  customer        User     @relation(fields: [customerId], references: [id])
+  paymentStatus   PaymentStatus
+  productsCost    Int
+  paymentMethod   PaymentMethod
+  customerId      String         @db.ObjectId
+  customer        User           @relation(fields: [customerId], references: [id], onDelete: Cascade)
   products        String[]
-
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  status          OrderStatus
+  created_at      DateTime       @default(now())
+  updated_at      DateTime       @updatedAt
 }
 
 model Product {
@@ -133,4 +134,41 @@ enum Size {
   xl
   xxl
   xxxl
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  CANCELED
+  REFUNDED
+}
+
+enum DeliveryStatus {
+  PENDING
+  DISPATCHED
+  IN_TRANSIT
+  DELIVERED
+  FAILED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  CASH
+}
+
+enum OrderStatus {
+  CART
+  CREATED
+  PROCESSING
+  CONFIRMED
+  PAYMENT_PENDING
+  AWAITING_SHIPMENT
+  SHIPPED
+  DELIVERED
+  COMPLETED
+  CANCELED
+  REFUND_PENDING
+  REFUNDED
 }

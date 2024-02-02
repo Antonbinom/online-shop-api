@@ -156,6 +156,7 @@ export const getAll = async (
         ...(maxPrice && { lte: +maxPrice }),
       },
     }),
+    ...(availableQuantity && { availableQuantity }),
   } as ProductFilters;
 
   const products = await prisma.product.findMany({
